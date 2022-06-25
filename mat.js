@@ -119,6 +119,35 @@ mat.rowSwitch = function(n, i, j) {
   return E;
 }
 
+//Uses Laplacian expansion - will be wildly inefficient, but good for
+//understanding. Assumes square matrix
+mat.det = function(A) {
+  if (A.length == 1) {
+    return A[0][0];
+  }
+  let sum = 0;
+  //iterate ea. col
+  for (let col = 0; col < A[0].length; col++) {
+    //create our submatrix
+    let S = this.zero(A.length - 1);
+    //always use the first row
+    for (let i = 0; i < S.length; i ++) {
+      for (let j = 0; j < S.length; j ++) {
+        if (j < col) {
+          S[i][j] = A[i+1][j];
+        } else {
+          S[i][j] = A[i+1][j+1];
+        }
+      }
+    }
+    const minor = this.det(S);
+    const el = A[0][col];
+    const sign = 1 - 2 * (col % 2);
+    sum += sign * el * minor;
+  }
+  return sum;
+}
+
 mat.eigenvalues = function(A) {
   // A - lam * I = 0
 }
@@ -151,5 +180,9 @@ function assertCell(M, r, c) {
 // console.log(mat.tran(
 //   [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
 // ))
+
+console.log(mat.det(
+  [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
+))
 
 export {mat};
