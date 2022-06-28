@@ -2,6 +2,13 @@ const mat = {};
 //Indexing consistency: any interface interactions are 1-based indicies, 
 //convert ASAP into 0-based indicies for doing computations.
 
+mat.example = [
+  //taken from Strang's linear algebra course (video 8?)
+  [1, 2, 2, 2],
+  [2, 4, 6, 8],
+  [3, 6, 8, 10],
+];
+
 mat.add = function(A, B) {
   const C = [];
   for (let r = 0; r < A.length; r++) {
@@ -108,7 +115,8 @@ mat.tran = function(A) {
   return T;
 }
 
-mat.rowSwitch = function(n, i, j) {
+//row permutation matrix
+mat.permMat = function(n, i, j) {
   const E = this.id(n);
   i = i - 1;
   j = j - 1;
@@ -117,6 +125,29 @@ mat.rowSwitch = function(n, i, j) {
   E[j][i] = 1;
   E[i][j] = 1;
   return E;
+}
+
+//Row operations are not functional, destroy the original matrix!
+mat.rowSwitch = function(E, i, j) {
+  for (let c = 0; c < E[0].length; c++) {
+    const temp = E[i - 1][c];
+    E[i - 1][c] = E[j - 1][c];
+    E[j - 1][c] = temp;
+  }
+}
+
+//adds m lots of row i to row j
+mat.rowAdd = function(E, m, i, j) {
+  for (let c = 0; c < E[0].length; c++) {
+    E[j - 1][c] = E[j - 1][c] + m * E[i - 1][c];
+  }
+}
+
+//multiplies row i by scalar s
+mat.rowMult = function(E, s, i) {
+  for (let c = 0; c < E[0].length; c++) {
+    E[i - 1][c] = s * E[i - 1][c];
+  }
 }
 
 //Uses Laplacian expansion - will be wildly inefficient, but good for
@@ -146,6 +177,11 @@ mat.det = function(A) {
     sum += sign * el * minor;
   }
   return sum;
+}
+
+// Row echelon form
+mat.ref = function(A) {
+
 }
 
 mat.eigenvalues = function(A) {
