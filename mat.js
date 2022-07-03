@@ -60,6 +60,14 @@ mat.diag = function(vec) {
   return D;
 }
 
+mat.diagOf = function(A) {
+  const vec = [];
+  for (let i = 0; i < A.length; i++) {
+     vec[i] = A[i][i];
+  }
+  return vec;
+}
+
 mat.scale = function(s, A) {
   const B = [];
   for (let r = 0; r < A.length; r++) {
@@ -150,6 +158,19 @@ mat.permMat = function(n, i, j) {
   return E;
 }
 
+/**
+ * Counts how many permutations were performed in order to arrive at the given 
+ * permutation matrix P. Does so by counting 1s in the main diagonal
+ */
+mat.permCount = function(P) {
+  let dim = P.length;
+  let sum = 0;
+  for (let i = 1; i < dim; i++) {
+    sum += P[i][i];
+  }
+  return dim - sum - 1;
+}
+
 //Row operations are not functional, destroy the original matrix!
 mat.rowSwitch = function(E, i, j) {
   for (let c = 0; c < E[0].length; c++) {
@@ -202,9 +223,24 @@ mat.LUdec = function(A) {
   return [this.tran(P), L, An];
 }
 
+//Uses LU. Assumes square matrix
+mat.detLU = function(A) {
+  const [P, _, U] = this.LUdec(A);
+  
+  const diagU = this.diagOf(U);
+  let prod = 1;
+  for (let i = 0; i < diagU.length; i++) {
+    prod = prod * diagU[i];
+  }
+
+  const perms = this.permCount(P); 
+  const sign = 1 - 2 * (perms % 2);
+  return sign * prod;
+}
+
 //Uses Laplacian expansion - will be wildly inefficient, but good for
 //understanding. Assumes square matrix
-mat.det = function(A) {
+mat.detLE = function(A) {
   if (A.length == 1) {
     return A[0][0];
   }
@@ -223,7 +259,7 @@ mat.det = function(A) {
         }
       }
     }
-    const minor = this.det(S);
+    const minor = this.detLE(S);
     const el = A[0][col];
     const sign = 1 - 2 * (col % 2);
     sum += sign * el * minor;
@@ -264,7 +300,7 @@ function assertCell(M, r, c) {
 //   [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
 // ))
 
-console.log(mat.det(
+console.log(mat.detLE(
   [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
 ))
 
