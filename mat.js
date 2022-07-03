@@ -153,9 +153,9 @@ mat.permMat = function(n, i, j) {
 //Row operations are not functional, destroy the original matrix!
 mat.rowSwitch = function(E, i, j) {
   for (let c = 0; c < E[0].length; c++) {
-    const temp = E[i - 1][c];
-    E[i - 1][c] = E[j - 1][c];
-    E[j - 1][c] = temp;
+    const temp = E[i][c];
+    E[i][c] = E[j][c];
+    E[j][c] = temp;
   }
 }
 
@@ -174,19 +174,32 @@ mat.rowMult = function(E, s, i) {
 }
 
 // LU decomposition, assumes square
-// naive implementation, currently O(n^4), doesn't handle permutations
+// naive implementation, currently O(n^4)
 mat.LUdec = function(A) {
-  const L = this.id(A.length);
+  const dim = A.length;
+  const L = this.id(dim);
+  const P = this.id(dim);
   let An = this.copy(A);
-  for (let n = 0; n < A[0].length; n++) {
-    const Ln = this.id(A.length);
-    for (let i = n + 1; i < A.length; i++) {
-      Ln[i][n] = - An[i][n] / An[n][n];
-      L[i][n] = An[i][n] / An[n][n];
+  for (let n = 0; n < dim; n++) {
+    if (An[n][n] == 0) {
+      for (let i = n + 1; i < dim; i++) {
+        if (An[i][n] != 0) {
+          this.rowSwitch(An, n, i);
+          this.rowSwitch(P, n, i);
+        }
+      }
     }
-    An = this.mult(Ln, An);
+
+    if (An[n][n] != 0) {
+      const Ln = this.id(dim);
+      for (let i = n + 1; i < dim; i++) {
+        Ln[i][n] = - An[i][n] / An[n][n];
+        L[i][n] = An[i][n] / An[n][n];
+      }
+      An = this.mult(Ln, An);
+    }
   }
-  return [L, An];
+  return [this.tran(P), L, An];
 }
 
 //Uses Laplacian expansion - will be wildly inefficient, but good for
