@@ -9,6 +9,23 @@ mat.example = [
   [3, 6, 8, 10],
 ];
 
+mat.ex2 = [
+  [3, 1, -1], 
+  [1, -1, 1], 
+  [2, 1, 1]
+];
+
+//O(n^2)
+mat.copy = function(A) {
+  let C = this.zero(A.length);
+  for (let r = 0; r < A.length; r++) {
+    for (let c = 0; c < A[0].length; c++) {
+      C[r][c] = A[r][c];
+    }
+  }
+  return C;
+}
+
 mat.add = function(A, B) {
   const C = [];
   for (let r = 0; r < A.length; r++) {
@@ -55,18 +72,19 @@ mat.scale = function(s, A) {
   return B;
 }
 
+// For A=m*n, B=n*p, O(m*n*p). For square matrices, O(n^3)
 mat.mult = function(A, B) {
   assert(A[0].length == B.length, "Inner dimmensions do not match")
-  const rowsA = A.length;
-  const colsA = A[0].length;
-  const colsB = B[0].length;
+  const leftDim = A.length;
+  const innerDim = A[0].length;
+  const rightDim = B[0].length;
 
   const C = [];
-  for (let r = 0; r < rowsA; r++) {
+  for (let r = 0; r < leftDim; r++) {
     C.push([]);
-    for (let c = 0; c < colsB; c++) {
+    for (let c = 0; c < rightDim; c++) {
       let sum = 0;
-      for (let i = 0; i < colsA; i++) {
+      for (let i = 0; i < innerDim; i++) {
         const ari = assertCell(A, r, i);
         const bic = assertCell(B, i, c);
         sum += ari * bic;
@@ -77,6 +95,10 @@ mat.mult = function(A, B) {
   return C;
 }
 
+/** 
+ * O(n^2). 
+ * The push ops only make for 2n cell copies (as there are log(n) copies done along the loop).
+ * */ 
 mat.id = function(n) {
   const I = [];
   for (let r = 0; r < n; r++) {
@@ -92,6 +114,7 @@ mat.id = function(n) {
   return I;
 }
 
+// O(n^2), see mat.id
 mat.zero = function(n) {
   const Z = [];
   for (let r = 0; r < n; r++) {
@@ -150,6 +173,22 @@ mat.rowMult = function(E, s, i) {
   }
 }
 
+// LU decomposition, assumes square
+// naive implementation, currently O(n^4), doesn't handle permutations
+mat.LUdec = function(A) {
+  const L = this.id(A.length);
+  let An = this.copy(A);
+  for (let n = 0; n < A[0].length; n++) {
+    const Ln = this.id(A.length);
+    for (let i = n + 1; i < A.length; i++) {
+      Ln[i][n] = - An[i][n] / An[n][n];
+      L[i][n] = An[i][n] / An[n][n];
+    }
+    An = this.mult(Ln, An);
+  }
+  return [L, An];
+}
+
 //Uses Laplacian expansion - will be wildly inefficient, but good for
 //understanding. Assumes square matrix
 mat.det = function(A) {
@@ -177,11 +216,6 @@ mat.det = function(A) {
     sum += sign * el * minor;
   }
   return sum;
-}
-
-// Row echelon form
-mat.ref = function(A) {
-
 }
 
 mat.eigenvalues = function(A) {
