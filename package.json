@@ -1,0 +1,22 @@
+{
+  "name": "graph-mat",
+  "version": "0.0.1",
+  "description": "Graph and matrix algorithsm for learning purposes",
+  "main": "graph.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deanrobertcook/graph-mat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deanrobertcook/graph-mat/issues"
+  },
+  "homepage": "https://github.com/deanrobertcook/graph-mat#readme",
+  "devDependencies": {
+    "jest": "^28.1.2"
+  }
+}
