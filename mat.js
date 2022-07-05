@@ -304,4 +304,4 @@ console.log(mat.detLE(
   [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
 ))
 
-export {mat};
+module.exports = mat;
