@@ -13,10 +13,19 @@ const ex2 = [
   [2, 1, 1]
 ];
 
+const sing33 = [
+  [1, 1, 1], 
+  [1, 2, 3], 
+  [2, 3, 4]
+]
+
 test('Finds determinant using Laplacian expansion', () => {
   expect(mat.detLE(ex2)).toBe(-8);
+  expect(mat.detLE(sing33)).toBe(0);
 });
 
 test('Finds determinant using LU decomposition', () => {
   expect(mat.detLU(ex2)).toBe(-8);
+  console.log(mat.formatMats(mat.LUdec(sing33)));
+  expect(mat.detLU(sing33)).toBe(0);
 });

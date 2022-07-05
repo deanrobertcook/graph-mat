@@ -2,6 +2,30 @@ const mat = {};
 //Indexing consistency: any interface interactions are 1-based indicies, 
 //convert ASAP into 0-based indicies for doing computations.
 
+//formats a list of matrices for Jest
+mat.formatMats = function(mats) {
+  return mats.map(M => mat.format(M)).join('\n\n');
+}
+
+//Based off of:
+//https://gist.github.com/lbn/3d6963731261f76330af
+mat.format = function (A) {
+  function col(i) {
+    return A.map(row => row[i]);
+  }
+  
+  let colMaxes = [];
+  for (let i = 0; i < A[0].length; i++) {
+    colMaxes.push(Math.max(...col(i).map(n => n.toString().length)));
+  }
+
+  return A.map(row => {
+    return row.map((val, j) => {
+      return new Array(colMaxes[j] - val.toString().length + 1).join(" ") + val.toString();
+    }).join(' ');
+  }).join('\n');
+}
+
 //O(n^2)
 mat.copy = function(A) {
   let C = this.zero(A.length);
@@ -161,9 +185,9 @@ mat.permCount = function(P) {
 //Row operations are not functional, destroy the original matrix!
 mat.rowSwitch = function(E, i, j) {
   for (let c = 0; c < E[0].length; c++) {
-    const temp = E[i][c];
-    E[i][c] = E[j][c];
-    E[j][c] = temp;
+    const temp = E[i - 1][c];
+    E[i - 1][c] = E[j - 1][c];
+    E[j - 1][c] = temp;
   }
 }
 
@@ -192,8 +216,8 @@ mat.LUdec = function(A) {
     if (An[n][n] == 0) {
       for (let i = n + 1; i < dim; i++) {
         if (An[i][n] != 0) {
-          this.rowSwitch(An, n, i);
-          this.rowSwitch(P, n, i);
+          this.rowSwitch(An, n + 1, i + 1);
+          this.rowSwitch(P, n + 1, i + 1);
         }
       }
     }
