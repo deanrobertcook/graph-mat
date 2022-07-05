@@ -2,19 +2,6 @@ const mat = {};
 //Indexing consistency: any interface interactions are 1-based indicies, 
 //convert ASAP into 0-based indicies for doing computations.
 
-mat.example = [
-  //taken from Strang's linear algebra course (video 8?)
-  [1, 2, 2, 2],
-  [2, 4, 6, 8],
-  [3, 6, 8, 10],
-];
-
-mat.ex2 = [
-  [3, 1, -1], 
-  [1, -1, 1], 
-  [2, 1, 1]
-];
-
 //O(n^2)
 mat.copy = function(A) {
   let C = this.zero(A.length);
@@ -282,26 +269,5 @@ function assertCell(M, r, c) {
   assert(v || v == 0, `missing value at ${r+1}, ${c+1}`);
   return v;
 }
-
-// Quick and dirty testing:
-// console.log(mat.add(
-//   [[1, 3, 2], [1, 1, 3]], 
-//   [[1, 1, 1], [1, 1, 1]]
-// ));
-
-// console.log(mat.mult(
-//   [[1, 2, 3], [1, 1, 3]], 
-//   [[1, 1], [1, 1], [1, 3]]
-// ));
-
-// console.log(mat.id(5));
-  
-// console.log(mat.tran(
-//   [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
-// ))
-
-console.log(mat.detLE(
-  [[1, 2, 3], [1, 1, 3], [7, 2, 1]]
-))
 
 module.exports = mat;
