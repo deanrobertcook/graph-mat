@@ -1,9 +1,10 @@
 const mat = {};
+const vec = require('./vec');
 //Indexing consistency: any interface interactions are 1-based indicies, 
 //convert ASAP into 0-based indicies for doing computations.
 
 /*********************
- * ROW/COL/VEC OPERATIONS
+ * ROW/COL OPERATIONS
  *********************/
 mat.col = function (A, k) {
   return A.map(row => row[k]);
@@ -30,24 +31,6 @@ mat.rowMult = function (E, s, i) {
   for (let c = 0; c < E[0].length; c++) {
     E[i - 1][c] = s * E[i - 1][c];
   }
-}
-
-mat.innerProduct = function(u, v) {
-  assert(u.length == v.length, "Vectors have different lengths");
-  let sum = 0;
-  for (let i = 0; i < u.length; i++) {
-    sum += u[i] * v[i];
-  }
-  return sum;
-}
-
-mat.vSub = function(u, v) {
-  assert(u.length == v.length, "Vectors have different lengths");
-  let w = [];
-  for (let i = 0; i < u.length; i++) {
-    w.push(u[i] - v[i]);
-  }
-  return w;
 }
 
 /**************************
@@ -171,7 +154,7 @@ mat.mult = function (A, B) {
   for (let r = 0; r < A.length; r++) {
     C.push([]);
     for (let c = 0; c < B[0].length; c++) {
-      C[r].push(this.innerProduct(A[r], this.col(B, c)));
+      C[r].push(vec.innerProduct(A[r], this.col(B, c)));
     }
   }
   return C;

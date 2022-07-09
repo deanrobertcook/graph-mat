@@ -17,15 +17,7 @@ const sing33 = [
   [1, 1, 1], 
   [1, 2, 3], 
   [2, 3, 4]
-]
-
-test('Test inner product of two vectors', () => {
-  expect(mat.innerProduct([1, 1, 1], [1, 1, 1])).toBe(3);
-});
-
-test('Test subtracting two vectors', () => {
-  expect(mat.vSub([1, 1, 1], [1, 1, 1])).toStrictEqual([0, 0, 0]);
-});
+];
 
 test('Matrix multiplication', () => {
   expect(mat.mult(
