@@ -33,3 +33,7 @@ test('Finds determinant using LU decomposition', () => {
 test('Test inner product of two vectors', () => {
   expect(mat.innerProduct([1, 1, 1], [1, 1, 1])).toBe(3);
 });
+
+test('Test subtracting two vectors', () => {
+  expect(mat.vSub([1, 1, 1], [1, 1, 1])).toStrictEqual([0, 0, 0]);
+});

@@ -3,7 +3,7 @@ const mat = {};
 //convert ASAP into 0-based indicies for doing computations.
 
 /*********************
- * ROW/COL OPERATIONS
+ * ROW/COL/VEC OPERATIONS
  *********************/
 mat.col = function (A, k) {
   return A.map(row => row[k]);
@@ -39,6 +39,15 @@ mat.innerProduct = function(u, v) {
     sum += u[i] * v[i];
   }
   return sum;
+}
+
+mat.vSub = function(u, v) {
+  assert(u.length == v.length, "Vectors have different lengths");
+  let w = [];
+  for (let i = 0; i < u.length; i++) {
+    w.push(u[i] - v[i]);
+  }
+  return w;
 }
 
 /**************************
@@ -283,7 +292,10 @@ mat.detLE = function (A) {
 }
 
 mat.QRdec = function(A) {
-  
+  const u1 = this.col(A, 1);
+
+  const v2 = this.col(A, 2);
+  // const u2 = v2 -  
 }
 
 /**********
