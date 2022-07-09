@@ -32,6 +32,15 @@ mat.rowMult = function (E, s, i) {
   }
 }
 
+mat.innerProduct = function(u, v) {
+  assert(u.length == v.length, "Vectors have different lengths");
+  let sum = 0;
+  for (let i = 0; i < u.length; i++) {
+    sum += u[i] * v[i];
+  }
+  return sum;
+}
+
 /**************************
  * MATRIX GENERATORS
  **************************/
@@ -273,6 +282,10 @@ mat.detLE = function (A) {
   return sum;
 }
 
+mat.QRdec = function(A) {
+  
+}
+
 /**********
  * MISC
  **********/
@@ -298,7 +311,7 @@ mat.formatMats = function (mats) {
 mat.format = function (A) {
   let colMaxes = [];
   for (let i = 0; i < A[0].length; i++) {
-    colMaxes.push(Math.max(...this.col(i).map(n => n.toString().length)));
+    colMaxes.push(Math.max(...this.col(A, i).map(n => n.toString().length)));
   }
 
   return A.map(row => {

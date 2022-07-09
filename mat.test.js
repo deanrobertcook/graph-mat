@@ -29,3 +29,7 @@ test('Finds determinant using LU decomposition', () => {
   console.log(mat.formatMats(mat.LUdec(sing33)));
   expect(mat.detLU(sing33)).toBe(0);
 });
+
+test('Test inner product of two vectors', () => {
+  expect(mat.innerProduct([1, 1, 1], [1, 1, 1])).toBe(3);
+});
