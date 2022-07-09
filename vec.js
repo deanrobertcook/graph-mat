@@ -3,6 +3,9 @@ const vec = {};
 //subtract vectors in order given, e.g. v1 - v2 - v3 = sub(v1, v2, v3);
 vec.sub = function(...vs) {
   const u = vs[0];
+  if (vs.length == 1) {
+    return u;
+  }
   let w = [];
   for (let i = 0; i < u.length; i++) {
     let sum = u[i];

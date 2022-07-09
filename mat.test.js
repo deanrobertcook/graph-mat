@@ -47,3 +47,37 @@ test('Finds determinant using LU decomposition', () => {
   expect(mat.detLU(sing33)).toBe(0);
 });
 
+test('QR decomposition of diagonal matrix should be I', () => {
+  expect(mat.QRdec(
+    [
+      [3, 0, 0],
+      [4, 2, 0],
+      [8, 1, 1]
+    ],
+    mat.id(3)
+  ));
+  expect(mat.QRdec(
+    [
+      [3, 1, 7],
+      [0, 2, 2],
+      [0, 0, 1]
+    ],
+    mat.id(3)
+  ));
+  expect(mat.QRdec(
+    [
+      [3, 1, 7, 2],
+      [0, 2, 2, 1],
+      [0, 0, 1, 3],
+      [0, 0, 0, 1]
+    ],
+    mat.id(4)
+  ));
+});
+
+test('QR decomposition of singular matrix should be?', () => {
+  console.log(mat.format(mat.QRdec(sing33)));
+});
+
+
+

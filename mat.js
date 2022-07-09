@@ -7,7 +7,7 @@ const vec = require('./vec');
  * ROW/COL OPERATIONS
  *********************/
 mat.col = function (A, k) {
-  return A.map(row => row[k]);
+  return A.map(row => row[k - 1]);
 }
 
 //Row operations are not functional, destroy the original matrix!
@@ -154,7 +154,7 @@ mat.mult = function (A, B) {
   for (let r = 0; r < A.length; r++) {
     C.push([]);
     for (let c = 0; c < B[0].length; c++) {
-      C[r].push(vec.innerProduct(A[r], this.col(B, c)));
+      C[r].push(vec.innerProduct(A[r], this.col(B, c + 1)));
     }
   }
   return C;
@@ -264,10 +264,23 @@ mat.detLE = function (A) {
 }
 
 mat.QRdec = function(A) {
-  const u1 = this.col(A, 1);
+  const Q = this.zero(A.length);
+  const us = []; //orthogonal, not normalised vectors
+  for (let c = 0; c < A[0].length; c++) {
+    const v = this.col(A, c + 1);
+    const projs = [];
+    for (let k = 0; k < c; k++) {
+      projs.push(vec.proj(us[k], v));
+    }
+    const u = vec.sub(v, ...projs);
+    us.push(u);
 
-  const v2 = this.col(A, 2);
-  // const u2 = v2 -  
+    const q = vec.norm(u);
+    for (let i = 0; i < A.length; i++) {
+      Q[i][c] = q[i];
+    }
+  }
+  return Q;
 }
 
 /**********
@@ -295,7 +308,7 @@ mat.formatMats = function (mats) {
 mat.format = function (A) {
   let colMaxes = [];
   for (let i = 0; i < A[0].length; i++) {
-    colMaxes.push(Math.max(...this.col(A, i).map(n => n.toString().length)));
+    colMaxes.push(Math.max(...this.col(A, i + 1).map(n => n.toString().length)));
   }
 
   return A.map(row => {
