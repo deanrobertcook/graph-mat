@@ -13,8 +13,8 @@ test('Test inner product of two vectors', () => {
 });
 
 test('Test projection', () => {
-  expect(vec.proj([1, 1, 1], [1, 1, 1])).toStrictEqual([1, 1, 1]);
+  expect(vec.proj([1, 1, 1], [2, 2, 2])).toStrictEqual([2, 2, 2]);
   expect(vec.proj([1, 0, 0], [0, 1, 0])).toStrictEqual([0, 0, 0]);
   expect(vec.proj([3, 0], [3, 4])).toStrictEqual([3, 0]);
-  expect(vec.proj([0, 3], [3, 4])).toStrictEqual([0, 3]);
+  expect(vec.proj([0, 3], [3, 4])).toStrictEqual([0, 4]);
 });
