@@ -34,8 +34,11 @@ vec.norm = function(u) {
   return this.scale(1 / Math.sqrt(ip), u);
 }
 
+vec.mag = function(u) {
+  return Math.sqrt(this.innerProduct(u, u));
+}
+
 vec.innerProduct = function(u, v) {
-  console.log(u, v)
   assert(u.length == v.length, "Vectors have different lengths");
   let sum = 0;
   for (let i = 0; i < u.length; i++) {

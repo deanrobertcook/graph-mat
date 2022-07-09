@@ -265,22 +265,25 @@ mat.detLE = function (A) {
 
 mat.QRdec = function(A) {
   const Q = this.zero(A.length);
+  const R = this.zero(A.length);
   const us = []; //orthogonal, not normalised vectors
   for (let c = 0; c < A[0].length; c++) {
     const v = this.col(A, c + 1);
     const projs = [];
     for (let k = 0; k < c; k++) {
-      projs.push(vec.proj(us[k], v));
+      const p = vec.proj(us[k], v);
+      R[k][c] = vec.mag(p);
+      projs.push(p);
     }
     const u = vec.sub(v, ...projs);
+    R[c][c] = vec.mag(u);
     us.push(u);
-
     const q = vec.norm(u);
     for (let i = 0; i < A.length; i++) {
       Q[i][c] = q[i];
     }
   }
-  return Q;
+  return [Q, R];
 }
 
 /**********
