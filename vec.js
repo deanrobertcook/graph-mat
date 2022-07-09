@@ -27,10 +27,15 @@ vec.scale = function(s, u) {
 }
 
 vec.norm = function(u) {
-  return this.scale(1 / Math.sqrt(this.innerProduct(u, u)), u);
+  const ip = this.innerProduct(u, u);
+  if (ip == 0) {
+    return u;
+  }
+  return this.scale(1 / Math.sqrt(ip), u);
 }
 
 vec.innerProduct = function(u, v) {
+  console.log(u, v)
   assert(u.length == v.length, "Vectors have different lengths");
   let sum = 0;
   for (let i = 0; i < u.length; i++) {
@@ -41,8 +46,13 @@ vec.innerProduct = function(u, v) {
 
 //projection of v onto u
 vec.proj = function(u, v) {
-  const uv = this.innerProduct(u, v);
   const uu = this.innerProduct(u, u);
+  if (uu == 0) {
+    // u is the zero vector! I think this is okay:
+    // https://math.stackexchange.com/questions/1486897/projecton-of-a-zero-vector-onto-itself-yields
+    return u; 
+  }
+  const uv = this.innerProduct(u, v);
   return this.scale(uv / uu, u);
 }
 
