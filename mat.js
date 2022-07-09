@@ -167,22 +167,11 @@ mat.scale = function (s, A) {
 
 // For A=m*n, B=n*p, O(m*n*p). For square matrices, O(n^3)
 mat.mult = function (A, B) {
-  assert(A[0].length == B.length, "Inner dimmensions do not match")
-  const leftDim = A.length;
-  const innerDim = A[0].length;
-  const rightDim = B[0].length;
-
   const C = [];
-  for (let r = 0; r < leftDim; r++) {
+  for (let r = 0; r < A.length; r++) {
     C.push([]);
-    for (let c = 0; c < rightDim; c++) {
-      let sum = 0;
-      for (let i = 0; i < innerDim; i++) {
-        const ari = assertCell(A, r, i);
-        const bic = assertCell(B, i, c);
-        sum += ari * bic;
-      }
-      C[r].push(sum);
+    for (let c = 0; c < B[0].length; c++) {
+      C[r].push(this.innerProduct(A[r], this.col(B, c)));
     }
   }
   return C;
