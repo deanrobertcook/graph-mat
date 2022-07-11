@@ -48,6 +48,16 @@ test('Finds determinant using LU decomposition', () => {
   expect(mat.detLU(sing33)).toBe(0);
 });
 
+//Shows the need for pivoting! 
+test.skip('Test rounding errors in LU decomposition', () => {
+  const A = [
+    [1e-16, -1],
+    [1,      1],
+  ];
+  const [_, L, U] = mat.LUdec(A);
+  expect(mat.mult(L, U)).toStrictEqual(A);
+});
+
 test('QR decomposition of upper triangular matrix should be I and itself', () => {
   const ex1 = [
       [3, 1, 7],
