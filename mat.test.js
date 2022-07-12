@@ -65,26 +65,29 @@ test('QR decomposition of upper triangular matrix should be I and itself', () =>
       [0, 0, 1]
     ];
 
-  expect(mat.QRdec(ex1)).toStrictEqual([mat.id(3), ex1]);
+  const [Q1, R1] = mat.QRdec(ex1)
+  expect([Q1, R1]).toStrictEqual([mat.id(3), ex1]);
+  expect(mat.mult(Q1, R1)).toStrictEqual(ex1);
 
-  const ex3 = [
+  const ex2 = [
     [3, 1, 7, 2],
     [0, 2, 2, 1],
     [0, 0, 1, 3],
     [0, 0, 0, 1]
   ];
-  expect(mat.QRdec(ex3)).toStrictEqual([mat.id(4), ex3]);
+
+  const [Q2, R2] = mat.QRdec(ex2)
+  expect([Q2, R2]).toStrictEqual([mat.id(4), ex2]);
+  expect(mat.mult(Q2, R2)).toStrictEqual(ex2);
 });
 
 test('QR decomposition of singular matrix should be?', () => {
   const [Q, R] = mat.QRdec(sing33);
 
   //TODO, look into https://github.com/maasencioh/jest-matcher-deep-close-to
-  expect(mat.mult(Q, R)).toBeCloseTo(sing33, 0.0001);
+  expect(mat.mult(Q, R)).toStrictEqual(sing33);
 
   console.log(mat.formatMats([Q, R]));
   console.log(mat.mult(Q, R));
 });
-
-
 
