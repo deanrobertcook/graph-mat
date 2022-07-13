@@ -83,11 +83,30 @@ test('QR decomposition of upper triangular matrix should be I and itself', () =>
 
 test('QR decomposition of singular matrix should be?', () => {
   const [Q, R] = mat.QRdec(sing33);
-
-  //TODO, look into https://github.com/maasencioh/jest-matcher-deep-close-to
-  expect(mat.mult(Q, R)).toStrictEqual(sing33);
-
-  console.log(mat.formatMats([Q, R]));
-  console.log(mat.mult(Q, R));
+  expect(mat.mult(Q, R)).matrixIsEqualTo(sing33);
 });
+
+test.skip("Some gram schmitt stuff", () => {
+
+  // const mu1 = Math.sqrt(6)
+  // const nu1 = Math.sqrt(1 / 6);
+  // const mu2 = Math.sqrt(2 / 4);
+  // const nu2 = Math.sqrt(1 / 2);
+  // const mu3 = Math.sqrt(582);
+  // const nu3 = Math.sqrt(1 / 582);
+  // const Qh = [
+  //   [    nu1, - nu2, nu3 * 5],
+  //   [    nu1,   nu2, nu3 * 14],
+  //   [nu1 * 2,     0, nu3 * 19]
+  // ];
+
+  // const Rh = [
+  //   [mu1, Math.sqrt(27/2),  2 * Math.sqrt(6)],
+  //   [  0,             mu2, Math.sqrt(361/98)],
+  //   [  0,               0,               mu3]
+  // ];
+  // console.log(mat.format(mat.mult(Qh, Rh)));
+
+  // console.log(nu1 * Math.sqrt(27/2), - nu2 * mu2)
+})
 

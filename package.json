@@ -6,6 +6,9 @@
   "scripts": {
     "test": "jest"
   },
+  "jest": {
+    "setupFilesAfterEnv": ["./setupJest.js"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deanrobertcook/graph-mat.git"
